@@ -9,10 +9,13 @@ def loginpage(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         user = authenticate(email=email, password=password)
+        print(email)
+        print(password)
+        print(user)
         if (user is not None):
             login(request,user)
             return redirect("App:dashboard")
     return render(request,"App/loginpage.html")
 
 def dashboard(request):
-    return HttpResponse
+    return HttpResponse("User logged in")
