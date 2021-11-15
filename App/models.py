@@ -67,6 +67,12 @@ class Post(models.Model):
     image = models.ImageField(upload_to = get_mainimage_path,blank=True,null=True)
     likes = models.ManyToManyField(NewUser,blank=True,default=None,related_name="like")
     like_counter = models.BigIntegerField(default=0)
+    is_event = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-time"]
+
+
     def __str__(self):
         return self.user.email
 
@@ -91,6 +97,16 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.user.email+" to "+self.msg.user.email
+
+def get_eventlogo_path(instance,icon):
+    return os.path.join("Eventicon/{0}/{1}".format(instance.title,instance.icon))
+
+class Event(models.Model):
+    title = models.CharField(max_length=300)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name="events")
+    icon = models.ImageField(upload_to = get_eventlogo_path)
     
+    def __str__(self):
+        return self.title
 
 

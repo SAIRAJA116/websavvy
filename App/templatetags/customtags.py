@@ -15,3 +15,8 @@ def isliked(post_id,user_id):
         return True
     else:
         return False
+
+@register .simple_tag
+def getevent(post_id):
+    event = Event.objects.get(post=post_id)
+    return event

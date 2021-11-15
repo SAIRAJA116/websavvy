@@ -11,7 +11,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'App/css/dashboard.css' %}" />
+    <link rel="stylesheet" href="{% static 'Coordinator/css/dashboard.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>WebSavvy|Dashboard</title>
@@ -33,12 +33,29 @@
                     <div class="card-body ">
                         <div class="d-flex justify-content-center">
                             {% if user.avatar %}
-                            <img src="{{user.avatar.url}}" width="50" height="50" />
+                            <img style="border-radius: 50%;" src="{{user.avatar.url}}" width="50" height="50" />
                             {% else %}
-                            <img src="{% static 'App/images/defaultavatar.png' %}" width="50" height="50" />
+                            <img src="{% static 'Coordinator/images/defaultavatar.png' %}" width="50" height="50" />
                             {% endif %}
                             <button type="button" class="btn btn-outline-secondary createpost ml-2" data-toggle="modal"
+                                onclick="document.getElementById('event').style.display='none';
+                                document.getElementById('notevent').style.display='block'
+                                document.getElementById('postorevent').value = 'post';"
                                 data-target="#postcreatemodal">Create your post</button>
+                        </div>
+                        <hr>
+                        <div>
+                            <button type="button" data-toggle="modal" onclick='document.getElementById("notevent").style.display = "none";
+                                document.getElementById("event").style.display = "block";
+                                document.getElementById("postorevent").value = "event";' data-target="#postcreatemodal"
+                                class="btn btn-outline-light text-dark"><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="20" height="20" fill="currentColor" class="bi bi-calendar4-event"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
+                                    <path
+                                        d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+                                </svg>Event</button>
                         </div>
 
 
@@ -55,26 +72,42 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        {% if user.avatar %}
-                                        <img src="{{user.avatar.url}}" width="50" height="50" />
-                                        {% else %}
-                                        <img src="{% static 'App/images/defaultavatar.png' %}" width="50" height="50" />
-                                        {% endif %}
-                                        <span><b>{{user.get_fullname}}</b></span>
-                                        <div class="float-right">
-                                            <button type="button" class="btn"
-                                                onclick="document.getElementById('multipleimage').click()">
-                                                <svg xmlns=" http://www.w3.org/2000/svg" width="25" height="25"
-                                                    fill="currentColor" class="bi bi-images" viewBox=" 0 0 16 16">
-                                                    <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-                                                    <path
-                                                        d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
-                                                </svg>
-                                            </button>
 
+                                        <div id="notevent">
+
+
+                                            {% if user.avatar %}
+                                            <img style="border-radius: 50%;" src="{{user.avatar.url}}" width="50"
+                                                height="50" />
+                                            {% else %}
+                                            <img src="{% static 'Coordinator/images/defaultavatar.png' %}" width="50"
+                                                height="50" />
+                                            {% endif %}
+                                            <span><b>{{user.get_fullname}}</b></span>
                                         </div>
                                         <form id="form" method="POST" enctype="multipart/form-data">
+                                            <div id="event">
+                                                <div
+                                                    style="background-color: grey; width: 40px; height: 40px; border-radius: 50%;">
+                                                </div>
+                                                <input name="title" type="text" class="form-control"
+                                                    placeholder="Title of the event" />
+                                            </div>
+                                            <div class="float-right">
+                                                <button type="button" class="btn"
+                                                    onclick="document.getElementById('multipleimage').click()">
+                                                    <svg xmlns=" http://www.w3.org/2000/svg" width="25" height="25"
+                                                        fill="currentColor" class="bi bi-images" viewBox=" 0 0 16 16">
+                                                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                                                        <path
+                                                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
                                             {% csrf_token %}
+                                            <input id="postorevent" type="text" name='postorevent' hidden />
                                             <div class="textarea">
                                                 <textarea class="form-control" name="message" rows="5"></textarea>
 
@@ -121,17 +154,26 @@
                         <div class="card-header">
                             <div>
                                 <div class="d-flex align-items-center flex-row">
+                                    {% if post.is_event %}
+                                    {% getevent post.id as event %}
+                                    <h5>{{event.title}}</h5>
+
+                                    {% else %}
                                     <div>
                                         {% if post.user.avatar %}
-                                        <img src="{{post.user.avatar.url}}" width="40" height="40" />
+                                        <img style="border-radius: 50%;" src="{{post.user.avatar.url}}" width="40"
+                                            height="40" />
                                         {% else %}
-                                        <img src="{% static 'App/images/defaultavatar.png' %}" width="40" height="40" />
+                                        <img src="{% static 'Coordinator/images/defaultavatar.png' %}" width="40"
+                                            height="40" />
                                         {% endif %}
+
                                     </div>
                                     <div class="ml-2">
                                         <span style="display: block;">{{post.user.get_fullname}}</span>
                                         <span style="display: block;">{{post.time|date}}</span>
                                     </div>
+                                    {% endif %}
                                 </div>
 
                             </div>
@@ -167,6 +209,9 @@
                                     <span class="sr-only">Next</span>
                                 </button>
                             </div>
+                            {% endif %}
+                            {% if post.is_event %}
+                            <p class="float-right">-{{post.user.get_fullname}}</p>
                             {% endif %}
 
                         </div>
@@ -212,7 +257,7 @@
 
                             </div>
                             <div class="comment float-right">
-                                <a class="btn btn btn-outline-light text-dark" href="{% url 'App:comments' post.id %}">
+                                <a class="btn btn btn-outline-light text-dark" href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-chat-square" viewBox="0 0 16 16">
                                         <path
@@ -300,6 +345,10 @@
     <!--------------------------------------------->
 
     <script>
+
+
+
+
         ////This code is for select and show image choosen for creating a post////
         var images = [];
         function selectimage() { ////This function is to select the image.

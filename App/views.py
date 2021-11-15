@@ -18,7 +18,10 @@ def loginpage(request):
         print(user)
         if (user is not None):
             login(request,user)
-            return redirect("App:dashboard")
+            if(user.isCoordinator==False):
+                return redirect("App:dashboard")
+            else:
+                return redirect("Coordinator:dashboard")
         else:
             messages.error(
                     request, " email or password are wrong please try again")
@@ -125,3 +128,4 @@ def get_comments(request,id):
     comments = Comment.objects.filter(msg=post)
     serializer = CommentSerializer(comments,many=True)
     return Response(serializer.data)
+
