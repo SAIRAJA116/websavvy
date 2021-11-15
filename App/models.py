@@ -27,7 +27,7 @@ class CustomAccountManager(BaseUserManager):
 
 
 
-def get_avataar_path(instance):
+def get_avataar_path(instance,avatar):
     pass
     return os.path.join("Avatar/{0}/{1}".format(instance.email,instance.avatar))
 
@@ -52,3 +52,45 @@ class NewUser(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return self.email+"("+self.roll+")"
+
+    def get_fullname(self):
+        return self.firstName+" "+self.lastName
+
+def get_mainimage_path(instance,image):
+    return os.path.join("PostImages/{0}/{1}".format(instance.user.email,instance.image))
+
+class Post(models.Model):
+    user = models.ForeignKey(NewUser,on_delete=models.CASCADE,related_name="posts")
+    message = models.TextField(blank=True,null=True)
+    time = models.DateTimeField(auto_now_add=True)
+    url = models.URLField(blank=True,null=True)
+    image = models.ImageField(upload_to = get_mainimage_path,blank=True,null=True)
+    likes = models.ManyToManyField(NewUser,blank=True,default=None,related_name="like")
+    like_counter = models.BigIntegerField(default=0)
+    def __str__(self):
+        return self.user.email
+
+def get_image_path(instance,image):
+    return os.path.join("PostImages/{0}/{1}".format(instance.msg.user.email,instance.image))
+
+class PostImage(models.Model):
+    msg = models.ForeignKey(Post,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to = get_image_path)
+
+    def __str__(self):
+        return self.msg.user.email+" "+str(self.msg.id)
+
+class Comment(models.Model):
+    msg = models.ForeignKey(Post,on_delete=models.CASCADE)
+    user = models.ForeignKey(NewUser,on_delete=models.CASCADE)
+    comment = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-time',]
+    
+    def __str__(self):
+        return self.user.email+" to "+self.msg.user.email
+    
+
+

@@ -1,8 +1,12 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.contrib.auth import authenticate,login,logout
-
-
+from .models import *
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib import messages
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import *
 # Create your views here.
 def loginpage(request):
     if(request.method=="POST"):
@@ -15,7 +19,109 @@ def loginpage(request):
         if (user is not None):
             login(request,user)
             return redirect("App:dashboard")
+        else:
+            messages.error(
+                    request, " email or password are wrong please try again")
+            return redirect("App:loginpage")
     return render(request,"App/loginpage.html")
 
+def signUp(request):
+    if(request.method=="POST"):
+        email = request.POST.get("email")
+        roll = request.POST.get("roll")
+        fn = request.POST.get("fn")
+        ln = request.POST.get("ln")
+        password = request.POST.get("password")
+        try:
+            user = NewUser(email=email,roll=roll,firstName = fn,lastName=ln,password = make_password(password))
+            user.save()
+            return redirect("App:loginpage")
+        except:
+            print("Something went wrong")
+        
+    return render(request,"App/signup.html")
+
+
 def dashboard(request):
-    return HttpResponse("User logged in")
+    user = request.user
+    posts = Post.objects.all()
+    if(request.method=="POST" or request.FILES):
+        message = request.POST.get("message")
+        images = request.FILES.getlist("images")
+        url = request.POST.get("url")
+        if(len(message)!=0 or (url is not None) or len(images)!=0):
+            if(len(images)==0):
+                post = Post(user = user,message=message,url=url)
+            else:
+                post = Post(user = user,message=message,url=url,image=images[0])
+            post.save()
+            if(len(images)>1):
+                for i in range(1,len(images)):
+                    obj = PostImage(msg=post,image=images[i])
+                    obj.save() 
+        else:
+            messages.error(request,"Post can't be empty")
+        return redirect("App:dashboard")
+    context = {
+        "user":user,
+        "posts":posts 
+    }
+    return render(request,"App/dashboard.html",context)
+
+def like(request):
+    user = request.user
+    if(request.POST.get("action")=="post"):
+        pass
+        liked=False
+        post_id = int(request.POST.get("postid"))
+        post = Post.objects.get(id=post_id)
+        if(post.likes.filter(id=user.id).exists()):
+            post.likes.remove(user)
+            post.like_counter -= 1
+            liked=False
+            post.save()
+        else:
+            post.likes.add(user)
+            post.like_counter+=1
+            liked=True
+            post.save()
+        result=str(post.like_counter)
+        return JsonResponse({"result":result,"liked":liked})
+
+def comments(request,id):
+    pass
+    try:
+        post=Post.objects.get(id=id)
+    except:
+        return HttpResponse("Something went wrong")
+    user=request.user
+    comments = Comment.objects.filter(msg=post)
+    if(request.method == "POST"):
+        message = request.POST.get("message")
+        print(message)
+        print(type(message))
+        if(len(message)!=0):
+            comment = Comment(msg = post,user = user,comment = message)
+            comment.save()
+            return JsonResponse({"result":"success"})
+        else:
+            messages.error(request,"Post can't be empty")
+        
+    context = {
+        "user":user,
+        "post":post,
+        "comments":comments
+        }
+    return render(request,"App/comments.html",context)
+
+
+@api_view(['GET'])
+def get_comments(request,id):
+    pass
+    try:
+        post = Post.objects.get(id=id)
+    except:
+        pass
+    comments = Comment.objects.filter(msg=post)
+    serializer = CommentSerializer(comments,many=True)
+    return Response(serializer.data)
