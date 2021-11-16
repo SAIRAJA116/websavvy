@@ -23,10 +23,33 @@
         <span class="navbar-brand mb-0 h1">WebSavvy</span>
     </nav>
 
-    <div class="container">
+    <div class="container  mt-5">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-12">
+                <a style="color:black" class="text-decoration-none" href="#">
+                    <div style="background: white; border-radius: 5px;">
+                        <div
+                            style="width: 100%; height:50px; background:rgb(199, 199, 211); border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            {% if user.avatar %}
+                            <img style="border-radius: 50%; margin-top: -25px;" src="{{user.avatar.url}}" width="60"
+                                height="60" />
+                            {% else %}
+                            <img style="border-radius: 50%; margin-top: -25px;"
+                                src="{% static 'Coordinator/images/defaultavatar.png' %}" width="60" height="60" />
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-column align-items-center ">
+                            <b>
+                                <p style="font-size: 12px; margin-bottom: 0; ">{{user.get_fullname}}</p>
+                            </b>
+                            <p style="font-size: 12px; ">{{ user.roll }}</p>
 
+                            <p style="font-size: 12px; opacity: .7; text-align: center;">Active member of WebSavvy</p>
+                        </div>
+                    </div>
+                </a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="card mb-2">
@@ -152,7 +175,7 @@
                     {% for post in posts %}
                     <div class="card mb-2">
                         <div class="card-header">
-                            <div>
+                            <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center flex-row">
                                     {% if post.is_event %}
                                     {% getevent post.id as event %}
@@ -175,6 +198,44 @@
                                     </div>
                                     {% endif %}
                                 </div>
+                                <div class="float-right">
+
+                                    {% if post.user.isCoordinator != True or user == post.user %}
+                                    <button type="button" data-toggle="modal" data-target="#deletepost{{post.id}}"
+                                        class="btn btn-outline-light float-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path fill=red
+                                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                            <path fill-rule="evenodd" fill=red
+                                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                        </svg>
+                                    </button>
+
+                                    {% endif %}
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deletepost{{post.id}}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete this post?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">No</button>
+                                                    <a href="{% url 'Coordinator:deletepost' post.id %}" type="button"
+                                                        class="btn btn-primary">Yes</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
 
                             </div>
                         </div>
@@ -257,7 +318,8 @@
 
                             </div>
                             <div class="comment float-right">
-                                <a class="btn btn btn-outline-light text-dark" href="#">
+                                <a class="btn btn btn-outline-light text-dark"
+                                    href="{% url 'Coordinator:comments' post.id %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-chat-square" viewBox="0 0 16 16">
                                         <path

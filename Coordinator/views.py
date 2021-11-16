@@ -44,3 +44,42 @@ def dashboard(request):
         "posts":posts 
     }
     return render(request,"Coordinator/dashboard.html",context)
+
+
+def comments(request,id):
+    pass
+    try:
+        post=Post.objects.get(id=id)
+    except:
+        return HttpResponse("Something went wrong")
+    user=request.user
+    comments = Comment.objects.filter(msg=post)
+    if(request.method == "POST"):
+        message = request.POST.get("message")
+        print(message)
+        print(type(message))
+        if(len(message)!=0):
+            comment = Comment(msg = post,user = user,comment = message)
+            comment.save()
+            return JsonResponse({"result":"success"})
+        else:
+            messages.error(request,"Post can't be empty")
+        
+    context = {
+        "user":user,
+        "post":post,
+        "comments":comments
+        }
+    return render(request,"Coordinator/comments.html",context)
+
+def deletePost(request,post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        if(post.is_event):
+            event = Event.objects.get(post=post)
+            event.delete()
+        post.delete()
+    except:
+        pass
+        return HttpResponse("Error occured")
+    return redirect("Coordinator:dashboard")
