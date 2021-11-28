@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.auth.hashers import check_password,make_password
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from .models import *
+from django.db import IntegrityError
+import csv
 # Create your views here.
 
 
@@ -134,3 +137,67 @@ def deleteavatar(request):
     user.avatar = None
     user.save()
     return redirect("Coordinator:myaccount")
+
+@login_required(login_url="App:loginpage")
+# Here  admin will upload the pdf of the all the users of the college
+def setup(request):
+    pass
+    users= NewUser.objects.exclude(email="web@gmail.com")
+    if(request.method=="POST" or request.FILES):
+        if("add by csv" in request.POST):
+            pass
+            o = Csv(doc = request.FILES.get("doc"))
+            o.save()
+            with open(o.doc.path,'r') as f:
+                reader = csv.reader(f)
+                count=0
+                for i,row in enumerate(reader):
+                    if(i==0):
+                        pass
+                    else:
+                        try:
+                            user = NewUser(email = row[0],roll = row[1],firstName=row[2],lastName = row[3])
+                            user.save()
+                            count+=1
+                        except:
+                            messages.error(request,"Error occured while creating an user of email "+row[0])
+            o.delete()
+            if(count!=0):
+                messages.success(request,"Total "+str(count)+" users have been created")
+            return redirect("Coordinator:setup")
+        elif("individual" in request.POST):
+            email = request.POST.get("email")
+            roll = request.POST.get("roll")
+            firstName = request.POST.get("firstname")
+            lastName = request.POST.get("lastname")
+            isCoordinator = request.POST.get("iscoordinator")
+            try:
+                if(isCoordinator =="on"):
+                    user = NewUser(email = email,roll= roll,firstName=firstName,lastName=lastName,isCoordinator=True)
+                else:
+                    user = NewUser(email = email,roll= roll,firstName=firstName,lastName=lastName)
+                user.save()
+                messages.success(request,"The user created successfully")
+            except IntegrityError:
+                messages.error(request,"The user with email "+email+" already exists")
+            finally:
+                return redirect("Coordinator:setup")
+
+
+
+    return render(request,"Coordinator/setup.html",{"users":users})
+
+def deleteuser(request,id):
+    pass
+    
+    try:
+        user = NewUser.objects.get(id=id)
+        for i in Post.objects.filter(user=user):
+            for j in PostImage.objects.filter(msg=i):
+                j.delete()
+            i.delete()
+        user.delete()
+        messages.success(request,"User is deleted")
+    except:
+        messages.error(request,"Something went wrong please try again")
+    return redirect("Coordinator:setup")
