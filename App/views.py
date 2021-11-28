@@ -6,28 +6,45 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
 from .serializers import *
 # Create your views here.
 def loginpage(request):
-    if(request.method=="POST"):
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        user = authenticate(email=email, password=password)
-        print(email)
-        print(password)
-        print(user)
-        if (user is not None):
-            login(request,user)
-            if(user.isCoordinator==False):
-                return redirect("App:dashboard")
-            else:
-                return redirect("Coordinator:dashboard")
+    if(request.user.is_authenticated):
+        pass
+        user = request.user
+        if(user.isCoordinator==False):
+            return redirect("App:dashboard")
         else:
-            messages.error(
-                    request, " email or password are wrong please try again")
-            return redirect("App:loginpage")
-    return render(request,"App/loginpage.html")
+            return redirect("Coordinator:dashboard")
+    else:
 
+        if(request.method=="POST"):
+            email = request.POST.get("email")
+            password = request.POST.get("password")
+            user = authenticate(email=email, password=password)
+            print(email)
+            print(password)
+            print(user)
+            if (user is not None):
+                login(request,user)
+                if(user.isCoordinator==False):
+                    return redirect("App:dashboard")
+                else:
+                    return redirect("Coordinator:dashboard")
+            else:
+                messages.error(
+                        request, " email or password are wrong please try again")
+                return redirect("App:loginpage")
+        return render(request,"App/loginpage.html")
+
+@login_required(login_url="App:loginpage")
+def logoutuser(request):
+    pass
+    logout(request)
+    return redirect("App:loginpage")
+
+@login_required(login_url="App:loginpage")
 def signUp(request):
     if(request.method=="POST"):
         email = request.POST.get("email")
@@ -44,7 +61,7 @@ def signUp(request):
         
     return render(request,"App/signup.html")
 
-
+@login_required(login_url="App:loginpage")
 def dashboard(request):
     user = request.user
     posts = Post.objects.all()
@@ -71,6 +88,7 @@ def dashboard(request):
     }
     return render(request,"App/dashboard.html",context)
 
+@login_required(login_url="App:loginpage")
 def like(request):
     user = request.user
     if(request.POST.get("action")=="post"):
@@ -91,6 +109,7 @@ def like(request):
         result=str(post.like_counter)
         return JsonResponse({"result":result,"liked":liked})
 
+@login_required(login_url="App:loginpage")
 def comments(request,id):
     pass
     try:
@@ -129,3 +148,7 @@ def get_comments(request,id):
     serializer = CommentSerializer(comments,many=True)
     return Response(serializer.data)
 
+@login_required(login_url="App:loginpage")
+def deleteavatar(request):
+    pass
+    

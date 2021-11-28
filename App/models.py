@@ -3,6 +3,9 @@ from django.utils.translation import gettext_lazy
 from django.utils import timezone
 import os
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
+from datetime import datetime
+import os
+
 
 # Create your models here.
 class CustomAccountManager(BaseUserManager):
@@ -27,7 +30,7 @@ class CustomAccountManager(BaseUserManager):
 
 
 
-def get_avataar_path(instance,avatar):
+def get_avataar_path(instance,time,avatar):
     pass
     return os.path.join("Avatar/{0}/{1}".format(instance.email,instance.avatar))
 
@@ -57,17 +60,18 @@ class NewUser(AbstractBaseUser,PermissionsMixin):
         return self.firstName+" "+self.lastName
 
 def get_mainimage_path(instance,image):
-    return os.path.join("PostImages/{0}/{1}".format(instance.user.email,instance.image))
+    time = str(instance.time.year)+str(instance.time.month)+str(instance.time.day)+str(instance.time.hour) + str(instance.time.minute) + str(instance.time.second)
+    return os.path.join("PostImages/{0}/{1}/{2}".format(instance.user.email,time,instance.image))
 
 class Post(models.Model):
     user = models.ForeignKey(NewUser,on_delete=models.CASCADE,related_name="posts")
     message = models.TextField(blank=True,null=True)
     time = models.DateTimeField(auto_now_add=True)
-    url = models.URLField(blank=True,null=True)
-    image = models.ImageField(upload_to = get_mainimage_path,blank=True,null=True)
+    url = models.URLField(blank=True,null= True)
     likes = models.ManyToManyField(NewUser,blank=True,default=None,related_name="like")
     like_counter = models.BigIntegerField(default=0)
     is_event = models.BooleanField(default=False)
+    image = models.ImageField(upload_to = get_mainimage_path,blank=True,null=True)
 
     class Meta:
         ordering = ["-time"]
@@ -76,8 +80,13 @@ class Post(models.Model):
     def __str__(self):
         return self.user.email
 
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()
+
 def get_image_path(instance,image):
-    return os.path.join("PostImages/{0}/{1}".format(instance.msg.user.email,instance.image))
+    time = str(instance.msg.time.year)+str(instance.msg.time.month)+str(instance.msg.time.day)+str(instance.msg.time.hour) + str(instance.msg.time.minute) + str(instance.msg.time.second)
+    return os.path.join("PostImages/{0}/{1}/{2}".format(instance.msg.user.email,time,instance.image))
 
 class PostImage(models.Model):
     msg = models.ForeignKey(Post,on_delete=models.CASCADE)
@@ -85,6 +94,12 @@ class PostImage(models.Model):
 
     def __str__(self):
         return self.msg.user.email+" "+str(self.msg.id)
+
+    def delete(self,using=None,keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()
+
+
 
 class Comment(models.Model):
     msg = models.ForeignKey(Post,on_delete=models.CASCADE)

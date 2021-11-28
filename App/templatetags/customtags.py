@@ -16,7 +16,12 @@ def isliked(post_id,user_id):
     else:
         return False
 
-@register .simple_tag
+@register.simple_tag
 def getevent(post_id):
     event = Event.objects.get(post=post_id)
     return event
+
+@register.simple_tag
+def getnoofpost(user_id):
+    post = Post.objects.filter(user=user_id).count()
+    return post
