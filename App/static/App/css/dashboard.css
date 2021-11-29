@@ -1,0 +1,31 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background: rgb(220, 224, 228);
+}
+
+.createpost{
+    width: 80%;
+    border-radius: 30px;
+}
+
+.custom_toast{
+    color:white;
+    position:fixed;
+    top:10%;
+    right : 20px; 
+    background: rgba(247, 3, 3, 0.750);
+    padding:5px;
+    border-radius: 5px;
+    transform: translateX(1000px);
+    transition: all 300ms;
+}
+
+.show{
+    transform : translateX(0px);
+    
+}
