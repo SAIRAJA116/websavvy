@@ -30,7 +30,7 @@ class CustomAccountManager(BaseUserManager):
 
 
 
-def get_avataar_path(instance,time,avatar):
+def get_avataar_path(instance,avatar):
     pass
     return os.path.join("Avatar/{0}/{1}".format(instance.email,instance.avatar))
 

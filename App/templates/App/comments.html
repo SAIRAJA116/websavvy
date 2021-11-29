@@ -38,9 +38,9 @@
                                 <div class="d-flex align-items-center flex-row">
                                     <div>
                                         {% if post.user.avatar %}
-                                        <img src="{{post.user.avatar.url}}" width="40" height="40" />
+                                        <img src="{{post.user.avatar.url}}" width="40" height="40" style="border-radius: 50%;"  />
                                         {% else %}
-                                        <img src="{% static 'App/images/defaultavatar.png' %}" width="40" height="40" />
+                                        <img src="{% static 'App/images/defaultavatar.png' %}" width="40" height="40" style="border-radius: 50%;" />
                                         {% endif %}
                                     </div>
                                     <div class="ml-2">
@@ -154,7 +154,7 @@
                                     <div class="d-flex align-items-center flex-row">
                                         <div>
                                             {% if comment.user.avatar %}
-                                            <img src="{{comment.user.avatar.url}}" width="40" height="40" />
+                                            <img src="{{comment.user.avatar.url}}" width="40" height="40" style="border-radius: 50%;" />
                                             {% else %}
                                             <img src="{% static 'App/images/defaultavatar.png' %}" width="40"
                                                 height="40" />
@@ -399,7 +399,7 @@
                                         <div>
                                             <div class="d-flex align-items-center flex-row">
                                                 <div>
-                                                    <img src="${comments[i].user.avatar.url}" width="40" height="40" />
+                                                    <img src="${comments[i].user.avatar}" width="40" height="40" style="border-radius: 50%;" style="border-radius:50%" />
                                                 </div>
                                                 <div class="ml-2">
                                                     <span style="display: block;">${comments[i].user.firstName + " " + comments[i].user.lastName}</span>
@@ -421,7 +421,7 @@
                                         <div>
                                             <div class="d-flex align-items-center flex-row">
                                                 <div>
-                                                    <img src="{% static 'App/images/defaultavatar.png' %}" width="40" height="40" />
+                                                    <img src="{% static 'App/images/defaultavatar.png' %}" width="40" height="40" style="border-radius: 50%;" />
                                                 </div>
                                                 <div class="ml-2">
                                                     <span style="display: block;">${comments[i].user.firstName + " " + comments[i].user.lastName}</span>

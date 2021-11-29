@@ -148,7 +148,44 @@ def get_comments(request,id):
     serializer = CommentSerializer(comments,many=True)
     return Response(serializer.data)
 
+
+@login_required(login_url="App:loginpage")
+def myAccount(request):
+    pass
+    user = request.user
+    if(request.method=="POST" or request.FILES):
+        pass
+        if("firstname" in request.POST):
+            firstname = request.POST.get('firstName')
+            user.firstName = firstname
+            user.save()
+        elif("lastname" in request.POST):
+            lastname = request.POST.get("lastName")
+            user.lastName = lastname
+            user.save()
+        elif("resetpassword" in request.POST):
+            oldpassword = request.POST.get("oldpassword")
+            newpassword = request.POST.get("newpassword")
+            if(check_password(oldpassword,user.password)):
+                user.password=make_password(newpassword)
+                user.save()
+                logout(request)
+                return redirect("App:loginpage")
+        elif('changeimage' in request.POST):
+            avatar = request.FILES.get("avatar")
+            print(avatar)
+            user.avatar = avatar
+            user.save()
+        return redirect("App:myaccount")
+    context={
+        "user":user,
+    }
+    return render(request,"App/myAccount.html")
+
 @login_required(login_url="App:loginpage")
 def deleteavatar(request):
     pass
-    
+    user = request.user
+    user.avatar = None
+    user.save()
+    return redirect("App:myaccount") 

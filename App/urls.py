@@ -8,5 +8,7 @@ urlpatterns = [
     path('like/',views.like,name="like"),
     path("comments/<int:id>",views.comments,name="comments"),
     path("get_comments/<int:id>",views.get_comments,name="getcomments"),
-    path("logout",views.logoutuser,name="logout")
+    path("logout",views.logoutuser,name="logout"),
+    path("myaccount/",views.myAccount,name='myaccount'),
+    path('deleteavatar/',views.deleteavatar,name="deleteavatar"),
 ]
