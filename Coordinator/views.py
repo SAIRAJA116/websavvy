@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.db import IntegrityError
 import csv
+from django.core.mail import send_mail
 # Create your views here.
 
 

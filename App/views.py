@@ -8,7 +8,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from .serializers import *
+from django.core.mail import send_mail
+import random
 # Create your views here.
+
+
+
 def loginpage(request):
     if(request.user.is_authenticated):
         pass
@@ -38,13 +43,68 @@ def loginpage(request):
                 return redirect("App:loginpage")
         return render(request,"App/loginpage.html")
 
+
+
+def forgotpassword(request):
+    if(request.method == "POST"):
+        email = request.POST.get("email")
+        # try:
+        user = NewUser.objects.get(email=email)
+        otp = make_password(generateOTP(user.email,user.get_fullname()))
+        print(type(otp))
+        print(otp)
+        o = OTPContainer(otp = otp)
+        o.save()
+        return redirect("App:validateotp",email=email,otp=str(o.id))
+        # except:
+        #     pass
+        #     messages.error(request,"User with this email address does not exits, please make sure wheather you are using valid email or not")
+    return render(request,"App/forgotpassword.html")
+
+
+def generateOTP(email,name):
+    series = "0123456789"
+    otp = "".join(random.sample(series,6))
+    # -----------------Sending OTP to Email ---------------------
+
+    body = '''
+    Dear {name},
+    Here is you OTP:  {otp}    
+    '''.format(name=name,otp=otp)
+    send_mail("Support",body,"websavvy.info@gmail.com",[email],fail_silently=False)
+
+    # -----------------------------------------------------------
+    return otp
+
+
+def validateOTP(request,email,otp):
+    pass
+    if(request.method == "POST"):
+        pass
+        userotp = request.POST.get("otp")
+        password = request.POST.get("p1")
+        try:
+            if(check_password(userotp,OTPContainer.objects.get(id=otp).otp)):
+                user = NewUser.objects.get(email=email)
+                user.password = make_password(password)
+                user.save()
+                OTPContainer.objects.get(id=otp).delete()
+                return render(request,"App/passwordchanged.html")
+            else:
+                messages.error(request,"You have entered the wrong otp")
+        except:
+            messages.error(request,"Bad request")
+    return render(request,"App/validation.html")
+    
+
+
 @login_required(login_url="App:loginpage")
 def logoutuser(request):
     pass
     logout(request)
     return redirect("App:loginpage")
 
-@login_required(login_url="App:loginpage")
+
 def signUp(request):
     if(request.method=="POST"):
         email = request.POST.get("email")
@@ -189,3 +249,4 @@ def deleteavatar(request):
     user.avatar = None
     user.save()
     return redirect("App:myaccount") 
+

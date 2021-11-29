@@ -123,3 +123,7 @@ class Event(models.Model):
     
     def __str__(self):
         return self.title
+
+class OTPContainer(models.Model):
+    otp = models.CharField(max_length=1000)
+    
