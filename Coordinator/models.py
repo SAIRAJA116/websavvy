@@ -1,5 +1,5 @@
 from django.db import models
-
+import os
 # Create your models here.
 def csv_path(instance):
     return os.path.join("csvs/{0}".format(instance.doc))

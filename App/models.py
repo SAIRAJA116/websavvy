@@ -5,6 +5,7 @@ import os
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
 from datetime import datetime
 import os
+from PIL import Image  
 
 
 # Create your models here.
@@ -59,6 +60,16 @@ class NewUser(AbstractBaseUser,PermissionsMixin):
     def get_fullname(self):
         return self.firstName+" "+self.lastName
 
+    def save(self,*args,**kwargs):
+        super().save(*args,**kwargs)
+        if(self.avatar):
+            img = Image.open(self.avatar.path)
+            if img.height>150 or img.width>150  :
+                pass 
+                output_size = (150,150)
+                img.thumbnail(output_size)
+                img.save(self.avatar.path)
+
 def get_mainimage_path(instance,image):
     time = str(instance.time.year)+str(instance.time.month)+str(instance.time.day)+str(instance.time.hour) + str(instance.time.minute) + str(instance.time.second)
     return os.path.join("PostImages/{0}/{1}/{2}".format(instance.user.email,time,instance.image))
@@ -80,6 +91,16 @@ class Post(models.Model):
     def __str__(self):
         return self.user.email
 
+    def save(self,*args,**kwargs):
+        pass
+        super().save(*args,**kwargs)
+        if(self.image):
+            img = Image.open(self.image.path)
+            if(img.height>300 or img.width>300):
+                output_size = (300,300)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
+
     def delete(self, using=None, keep_parents=False):
         self.image.storage.delete(self.image.name)
         super().delete()
@@ -94,6 +115,16 @@ class PostImage(models.Model):
 
     def __str__(self):
         return self.msg.user.email+" "+str(self.msg.id)
+
+    def save(self,*args,**kwargs):
+        pass
+        super().save(*args,**kwargs)
+        if(self.image):
+            img = Image.open(self.image.path)
+            if(img.height>300 or img.width>300):
+                output_size = (300,300)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
 
     def delete(self,using=None,keep_parents=False):
         self.image.storage.delete(self.image.name)

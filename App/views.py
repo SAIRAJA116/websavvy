@@ -10,6 +10,13 @@ from django.contrib.auth.decorators import login_required
 from .serializers import *
 from django.core.mail import send_mail
 import random
+
+#dependies required for HTML email
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string #This is used for convert the html in to sharable string format
+from django.utils.html import strip_tags
+#################################
+
 # Create your views here.
 
 
@@ -28,9 +35,6 @@ def loginpage(request):
             email = request.POST.get("email")
             password = request.POST.get("password")
             user = authenticate(email=email, password=password)
-            print(email)
-            print(password)
-            print(user)
             if (user is not None):
                 login(request,user)
                 if(user.isCoordinator==False):
@@ -46,20 +50,28 @@ def loginpage(request):
 
 
 def forgotpassword(request):
-    if(request.method == "POST"):
-        email = request.POST.get("email")
-        # try:
-        user = NewUser.objects.get(email=email)
-        otp = make_password(generateOTP(user.email,user.get_fullname()))
-        print(type(otp))
-        print(otp)
-        o = OTPContainer(otp = otp)
-        o.save()
-        return redirect("App:validateotp",email=email,otp=str(o.id))
-        # except:
-        #     pass
-        #     messages.error(request,"User with this email address does not exits, please make sure wheather you are using valid email or not")
-    return render(request,"App/forgotpassword.html")
+    if(request.user.is_authenticated):
+        pass
+        user = request.user
+        if(user.isCoordinator==False):
+            return redirect("App:dashboard")
+        else:
+            return redirect("Coordinator:dashboard")
+    else:
+        if(request.method == "POST"):
+            email = request.POST.get("email")
+            try:
+                user = NewUser.objects.get(email=email)
+                otp = make_password(generateOTP(user.email,user.get_fullname()))
+                print(type(otp))
+                print(otp)
+                o = OTPContainer(otp = otp)
+                o.save()
+                return redirect("App:validateotp",email=email,otp=str(o.id))
+            except:
+                pass
+                messages.error(request,"User with this email address does not exits, please make sure wheather you are using valid email or not")
+        return render(request,"App/forgotpassword.html")
 
 
 def generateOTP(email,name):
@@ -67,12 +79,27 @@ def generateOTP(email,name):
     otp = "".join(random.sample(series,6))
     # -----------------Sending OTP to Email ---------------------
 
-    body = '''
-    Dear {name},
-    Here is you OTP:  {otp}    
-    '''.format(name=name,otp=otp)
-    send_mail("Support",body,"websavvy.info@gmail.com",[email],fail_silently=False)
+    # body = '''
+    # Dear {name},
+    # Here is you OTP:  {otp}    
+    # '''.format(name=name,otp=otp)
+    # send_mail("Support",body,"websavvy.info@gmail.com",[email],fail_silently=False)
 
+    #creating the html email
+    html_content = render_to_string("App/OTP.html",{"name":name,"otp":otp})
+    text_content = strip_tags(html_content)
+    email_obj=EmailMultiAlternatives(
+        #subject
+        "Websavvy Support",
+        #content
+        text_content,
+        #from email
+        "websavvy.info@gmail.com",
+        #to email
+        [email]
+    )
+    email_obj.attach_alternative(html_content,"text/html")
+    email_obj.send()
     # -----------------------------------------------------------
     return otp
 

@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse
+from django.template.loader import render_to_string
+from django.utils import html
 from App.models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password,make_password
@@ -9,6 +11,13 @@ from .models import *
 from django.db import IntegrityError
 import csv
 from django.core.mail import send_mail
+import random
+#dependies required for HTML email
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string #This is used for convert the html in to sharable string format
+from django.utils.html import strip_tags
+#################################
+
 # Create your views here.
 
 
@@ -157,9 +166,26 @@ def setup(request):
                         pass
                     else:
                         try:
-                            user = NewUser(email = row[0],roll = row[1],firstName=row[2],lastName = row[3])
+                            password = generatePassword()
+                            user = NewUser(email = row[0],roll = row[1],firstName=row[2],lastName = row[3],password=make_password(password))
                             user.save()
                             count+=1
+                            ##------------------Sending Email -------------------------------
+                            html_content = render_to_string("Coordinator/logininvite.html",{"user":user.email,"password":password,"name":user.get_fullname()})
+                            text_content = strip_tags(html_content)
+                            email_obj = EmailMultiAlternatives(
+                                #subject
+                                "Websavvy|Invitation",
+                                #content
+                                text_content,
+                                #from email
+                                "websavvy.info@gmail.com",
+                                #to email
+                                [user.email]
+                            )
+                            email_obj.attach_alternative(html_content,"text/html")
+                            email_obj.send()
+                            #----------------------------------------------------------------
                         except:
                             messages.error(request,"Error occured while creating an user of email "+row[0])
             o.delete()
@@ -177,7 +203,25 @@ def setup(request):
                     user = NewUser(email = email,roll= roll,firstName=firstName,lastName=lastName,isCoordinator=True)
                 else:
                     user = NewUser(email = email,roll= roll,firstName=firstName,lastName=lastName)
+                password=generatePassword()
+                user.password=make_password(password)
                 user.save()
+                ##------------------Sending Email -------------------------------
+                html_content = render_to_string("Coordinator/logininvite.html",{"email":user.email,"password":password,"name":user.get_fullname()})
+                text_content = strip_tags(html_content)
+                email_obj = EmailMultiAlternatives(
+                    #subject
+                    "Websavvy|Invitation",
+                    #content
+                    text_content,
+                    #from email
+                    "websavvy.info@gmail.com",
+                    #to email
+                    [user.email]
+                )
+                email_obj.attach_alternative(html_content,"text/html")
+                email_obj.send()
+                #----------------------------------------------------------------
                 messages.success(request,"The user created successfully")
             except IntegrityError:
                 messages.error(request,"The user with email "+email+" already exists")
@@ -187,6 +231,12 @@ def setup(request):
 
 
     return render(request,"Coordinator/setup.html",{"users":users})
+
+def generatePassword():
+    series = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    password = "".join(random.sample(series,6))    
+    return password
+
 
 def deleteuser(request,id):
     pass
