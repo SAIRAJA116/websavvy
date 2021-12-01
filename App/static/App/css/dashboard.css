@@ -5,13 +5,42 @@
 }
 
 body{
-    background: rgb(220, 224, 228);
+    background:white;
+}
+.navbar-light{
+    background: linear-gradient(to bottom right, #7e41bb -10%, #d87bdc 89%);
+    height: 70px;
+
+}
+.text-decoration-none{
+    color: rgb(233, 235, 236);
+}
+
+.card-header{
+    background-color: rgb(245, 227, 248);
+    
+}
+.card-footer{
+    background-color: rgb(245, 227, 248);
+}
+.card-body{
+    font-size: 14px;
+    padding:15px;
+}
+.btn-outline-light {
+    border-color: transparent;
+    margin-left: 8px;
+    padding-left:2px;
 }
 
 .createpost{
     width: 80%;
     border-radius: 30px;
 }
+span{
+    font-size: 12px;
+}
+
 
 .custom_toast{
     color:white;

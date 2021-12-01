@@ -5,9 +5,29 @@
 }
 
 body{
-    background: rgb(220, 224, 228);
+    background-color: white;
 }
+.navbar-light{
+    background: linear-gradient(to bottom right, #7e41bb -10%, #d87bdc 89%);
+    height: 70px;
 
+}
+.card-header{
+    background-color: rgb(245, 227, 248);
+    font-size: 12px;
+    
+}
+.card-footer{
+    background-color: rgb(245, 227, 248);
+}
+.card-body{
+    font-size: 14px;
+    padding:15px;
+}
+#like_button{
+    border: transparent;
+    margin-left: 10px;
+}
 .custom_toast{
     color:white;
     position:fixed;
