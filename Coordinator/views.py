@@ -170,7 +170,7 @@ def setup(request):
                             user.save()
                             count+=1
                             ##------------------Sending Email -------------------------------
-                            html_content = render_to_string("Coordinator/logininvite.html",{"user":user.email,"password":password,"name":user.get_fullname()})
+                            html_content = render_to_string("Coordinator/logininvite.html",{"email":user.email,"password":password,"name":user.get_fullname()})
                             text_content = strip_tags(html_content)
                             email_obj = EmailMultiAlternatives(
                                 #subject
