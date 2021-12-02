@@ -14,13 +14,26 @@
     <link rel="stylesheet" href="{% static 'Coordinator/css/comments.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <title>WebSavvy|Comments</title>
 </head>
 
 <body onload="showtoast()">
 
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"  style="color: white;">WebSavvy</span>
+    <nav class="navbar sticky-top navbar-light bg-light">
+        <a href="{% url 'Coordinator:dashboard' %}" class="navbar-brand mb-0 h1" style="color: white;"> &nbsp;
+            WebSavvy</a>
+        <span class="navbar-text">
+            <button class="btn btn-outlinel-light textdark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"
+                        fill="white" />
+                </svg>
+            </button>
+        </span>
     </nav>
 
     <div class="container-sm" style="margin-top: 30px;">
@@ -38,7 +51,8 @@
                                 <div class="d-flex align-items-center flex-row">
                                     <div>
                                         {% if post.user.avatar %}
-                                        <img src="{{post.user.avatar.url}}" width="40" height="40" style="border-radius:50%" />
+                                        <img src="{{post.user.avatar.url}}" width="40" height="40"
+                                            style="border-radius:50%" />
                                         {% else %}
                                         <img src="{% static 'Coordinator/images/defaultavatar.png' %}" width="40"
                                             height="40" />
@@ -46,7 +60,7 @@
                                     </div>
                                     <div class="ml-2">
                                         <span style="display: block;">{{post.user.get_fullname}}</span>
-                                        <span style="display: block; " >{{post.time|date}}</span>
+                                        <span style="display: block; ">{{post.time|date}}</span>
                                     </div>
                                 </div>
 
@@ -97,8 +111,9 @@
                                         <!--You definately need this csrf token even if we dont have the form because this csrf token is responsible for making the ajax call for like-->
                                         {% isliked post.id user.id as liked %}
                                         {% if liked %}
-                                        <svg id="like_icon1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="border: transparent;"
-                                            fill="purple" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
+                                        <svg id="like_icon1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            style="border: transparent;" fill="purple" class="bi bi-hand-thumbs-up-fill"
+                                            viewBox="0 0 16 16">
                                             <path
                                                 d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z" />
                                         </svg>
@@ -136,7 +151,8 @@
 
                                     <textarea id="message" class="form-control" placeholder="write your comment here"
                                         name="message"></textarea>
-                                    <button id="post-comment" type="submit" class="btn btn-primray" style="color: purple; margin-left: 10px;"> <i class="fa fa-send"></i></button>
+                                    <button id="post-comment" type="submit" class="btn btn-primray"
+                                        style="color: purple; margin-left: 10px;"> <i class="fa fa-send"></i></button>
 
 
                                 </div>
@@ -151,12 +167,13 @@
                         {% for comment in comments %}
 
                         <div class="card mb-2">
-                            <div class="card-header" >
+                            <div class="card-header">
                                 <div>
                                     <div class="d-flex align-items-center flex-row">
                                         <div>
                                             {% if comment.user.avatar %}
-                                            <img src="{{comment.user.avatar.url}}" width="40" height="40" style="border-radius:50%" />
+                                            <img src="{{comment.user.avatar.url}}" width="40" height="40"
+                                                style="border-radius:50%" />
                                             {% else %}
                                             <img src="{% static 'Coordinator/images/defaultavatar.png' %}" width="40"
                                                 height="40" />

@@ -14,7 +14,7 @@
     <img class="bg4" src="{% static 'App/images/team10.svg' %}">
     <center>
         <div class="container">
-            <p>An OTP for changing password have been sent the corresponding Email Address</p>
+            <p>An OTP for changing password have been sent to the corresponding Email Address</p>
             <center>
                 <form method="POST">
                     {% csrf_token %}
@@ -27,14 +27,34 @@
                         <label for="p2"></label>
                         <input type="password" id="p2" class="form-control" placeholder="Confirm Password" name="p2"
                             required />
-
-                        <button id="submit_button" type="submit" class="btn"
-                            onclick="document.getElementById('submit_button').type='none'">SUBMIT</button>
+                        <p id="error" style="display:none; color:red; font-size: 10px; ">Password and conform need to be
+                            same</p>
+                        <button id="submit_button" type="button" class="btn" onclick="func()">SUBMIT</button>
+                        <input id="submit" type="submit" hidden />
                     </div>
                 </form>
             </center>
 
         </div>
+
+
+        <script>
+            var p1 = document.getElementById("p1")
+            var p2 = document.getElementById("p2")
+            var btn = document.getElementById("submit_button")
+            var error = document.getElementById("error")
+            function func() {
+                if (p2.value != "") {
+                    if (p1.value != p2.value) {
+                        error.style.display = "block";
+                    } else {
+                        error.style.display = "none";
+                        document.getElementById("submit").click()
+                        document.getElementById("submit").type = "none"
+                    }
+                }
+            }
+        </script>
 
 </body>
 

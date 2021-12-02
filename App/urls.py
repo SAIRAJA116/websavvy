@@ -7,6 +7,7 @@ urlpatterns = [
     path("validateotp/<str:email>/<str:otp>",views.validateOTP,name="validateotp"),
     path("signup/",views.signUp,name="signup"),
     path("dashboard/",views.dashboard,name="dashboard"),
+    path("deletepost/<int:post_id>",views.deletePost,name="deletepost"),
     path('like/',views.like,name="like"),
     path("comments/<int:id>",views.comments,name="comments"),
     path("get_comments/<int:id>",views.get_comments,name="getcomments"),

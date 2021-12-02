@@ -176,6 +176,21 @@ def dashboard(request):
     return render(request,"App/dashboard.html",context)
 
 @login_required(login_url="App:loginpage")
+def deletePost(request,post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        # post.delete()
+        #the postimage class images are not deleting the while deleting the object of the post so the temporary solution is given here.
+        o = PostImage.objects.filter(msg=post_id)
+        for i in o:
+            i.delete()
+        post.delete()
+    except:
+        pass
+        return HttpResponse("error occured")
+    return redirect("App:dashboard")
+
+@login_required(login_url="App:loginpage")
 def like(request):
     user = request.user
     if(request.POST.get("action")=="post"):

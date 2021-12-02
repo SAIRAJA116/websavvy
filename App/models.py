@@ -96,13 +96,14 @@ class Post(models.Model):
         super().save(*args,**kwargs)
         if(self.image):
             img = Image.open(self.image.path)
-            if(img.height>300 or img.width>300):
-                output_size = (300,300)
+            if(img.height>400 or img.width>400):
+                output_size = (400,400)
                 img.thumbnail(output_size)
                 img.save(self.image.path)
 
     def delete(self, using=None, keep_parents=False):
-        self.image.storage.delete(self.image.name)
+        if(self.image):
+            self.image.storage.delete(self.image.name)
         super().delete()
 
 def get_image_path(instance,image):
@@ -127,7 +128,8 @@ class PostImage(models.Model):
                 img.save(self.image.path)
 
     def delete(self,using=None,keep_parents=False):
-        self.image.storage.delete(self.image.name)
+        if(self.image):
+            self.image.storage.delete(self.image.name)
         super().delete()
 
 

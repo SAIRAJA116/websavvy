@@ -104,7 +104,6 @@ def deletePost(request,post_id):
         post.delete()
     except:
         pass
-        return HttpResponse("Error occured")
     return redirect("Coordinator:dashboard")
 
 @login_required(login_url="App:loginpage")

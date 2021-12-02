@@ -14,25 +14,30 @@
     <link rel="stylesheet" href="{% static 'Coordinator/css/dashboard.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <title>WebSavvy|Dashboard</title>
 </head>
 
 <body onload="showtoast()">
 
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar sticky-top navbar-light bg-light">
         <span class="navbar-brand mb-0 h1" style="color: white;">WebSavvy</span>
-        <span class="nav-item mr-auto"  style="color: white;">
+        <span class="nav-item mr-auto" style="color: white;">
             <a class="text-decoration-none " href="{% url 'Coordinator:setup' %}">Setup</a>
-          </span>
-          <span class="navbar-text">
-              <button class="btn btn-outlinel-light textdark">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                      <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" style="fill:white;"/>
-                    </svg>
-              </button>
-          </span>  
+        </span>
+        <span class="navbar-text">
+            <button class="btn btn-outlinel-light textdark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"
+                        style="fill:white;" />
+                </svg>
+            </button>
+        </span>
     </nav>
-    
+
 
 
     <div class="container  mt-5">
@@ -54,15 +59,24 @@
                         </div>
                         <div class="d-flex flex-column align-items-center ">
                             <b>
-                                <p style="font-size: 12px; margin-bottom: 0; ">{{user.get_fullname}}</p>
+                                <p style="font-size: 12px; margin-bottom: 0; ">{{user.get_fullname}} <svg
+                                        xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                        class="bi bi-check-circle" viewBox="0 0 16 16">
+                                        <path fill="purple"
+                                            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path fill="purple"
+                                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                    </svg></p>
                             </b>
                             <p style="font-size: 12px; ">{{ user.roll }}</p>
 
-                            <p style="font-size: 12px; opacity: .7; text-align: center;">Student Coordinator at WebSavvy</p>
+                            <p style="font-size: 12px; opacity: .7; text-align: center;">Student Coordinator at WebSavvy
+                            </p>
                         </div>
                     </div>
                 </a>
-                <div style=" background: rgb(245, 227, 248);; width: 100%; height: 30px; padding-top:8px;border-radius: 5px;" class="mt-3">
+                <div style=" background: rgb(245, 227, 248);; width: 100%; height: 30px; padding-top:8px;border-radius: 5px;"
+                    class="mt-3">
                     {% getnoofpost user.id as num %}
                     <p style="font-size: 12px; opacity: .7; text-align: center;">no of posts posted : {{num}}</p>
 
@@ -80,8 +94,9 @@
                             <button type="button" class="btn btn-outline-secondary createpost ml-2" data-toggle="modal"
                                 onclick="document.getElementById('event').style.display='none';
                                 document.getElementById('notevent').style.display='block'
-                                document.getElementById('postorevent').value = 'post';"
-                                data-target="#postcreatemodal" style="background-color: rgb(243, 242, 242); border: transparent; font-size: 14px;">Create your post</button>
+                                document.getElementById('postorevent').value = 'post';" data-target="#postcreatemodal"
+                                style="background-color: rgb(243, 242, 242); border: transparent; font-size: 14px;">Create
+                                your post</button>
                         </div>
                         <hr>
                         <div>
@@ -95,7 +110,7 @@
                                         d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z" />
                                     <path
                                         d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
-                                </svg> &nbsp;  Event </button>
+                                </svg> &nbsp; Event </button>
                         </div>
 
 
@@ -148,7 +163,7 @@
 
                                             {% csrf_token %}
                                             <input id="postorevent" type="text" name='postorevent' hidden />
-                                            <div class="textarea">
+                                            <div class="textarea mt-2">
                                                 <textarea class="form-control" name="message" rows="5"></textarea>
 
 
@@ -210,7 +225,20 @@
 
                                     </div>
                                     <div class="ml-2">
+                                        {% if post.user.isCoordinator == True %}
+
+                                        <span style="display: block; font-size: 12px;">{{post.user.get_fullname}} <svg
+                                                xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                <path fill="purple"
+                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                <path fill="purple"
+                                                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                            </svg></span>
+                                        {% else %}
                                         <span style="display: block; font-size: 12px;">{{post.user.get_fullname}}</span>
+
+                                        {% endif %}
                                         <span style="display: block;  font-size: 10px;">{{post.time|date}}</span>
                                     </div>
                                     {% endif %}
@@ -221,7 +249,8 @@
                                     <button type="button" data-toggle="modal" data-target="#deletepost{{post.id}}"
                                         class="btn btn-outline-light float-right">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" border-color="transparent" class="bi bi-trash" viewBox="0 0 16 16">
+                                            fill="currentColor" border-color="transparent" class="bi bi-trash"
+                                            viewBox="0 0 16 16">
                                             <path fill=red
                                                 d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                                             <path fill-rule="evenodd" fill=red
@@ -342,7 +371,7 @@
                                         <path
                                             d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
                                     </svg>
-                                    <span >Comment</span>
+                                    <span>Comment</span>
                                 </a>
 
                             </div>

@@ -6,6 +6,7 @@
 
 body{
     background: white;
+    font-family: "Poppins", sans-serif;
 }
 .navbar-light{
     background: linear-gradient(to bottom right, #7e41bb -10%, #d87bdc 89%);
