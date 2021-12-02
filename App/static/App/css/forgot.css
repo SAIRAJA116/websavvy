@@ -1,0 +1,144 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins);
+
+body {
+  font-family: "Poppins", sans-serif;
+  align-items: center;
+  overflow: hidden;
+  
+}
+/*background_image*/
+.bg4{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+    width:100%;
+    opacity: 0.4;
+  
+}
+/*container of the form*/
+.container{
+
+  width: 500px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+	border-radius: 20px;
+  background: white;
+  margin-top: 170px; 
+}
+/*apply for heading*/
+.card-body >h2{
+  text-align: center;
+  font-weight: bold;
+  color:rgb(26, 30, 73);
+  padding-top:10px;
+}
+/*description*/
+.card-body >p{
+  text-align:center;
+  color:rgb(16, 4, 41);
+  font-weight: 500;
+  font-size: 15px;
+}
+/*email input*/
+#email{
+  width: 400px;
+  margin-top:20px;
+  font-size: 12px;
+  color:rgb(11, 4, 29);
+  font-weight: 500;
+  border-color:transparent;
+  background-color: rgb(238, 236, 236);
+  padding: 10px;
+  border-radius: 20px;
+}
+/*submit button*/
+.container .btn1{
+  
+  margin: 20px;
+  width: 150px;
+  background-color: #874baf;
+  color:white;
+  border-radius: 30px;
+  border-color: transparent;
+  padding: 10px;
+
+}
+.container .btn1:hover{
+  background-color:white;
+  color:rgb(104, 55, 137);
+}
+/*media queries*/
+/*maximum width upto700px*/
+@media screen and (max-width:700px){
+	.container{
+		width: 400px;
+	}
+  #email{
+    width: 330px;
+  }
+  .container .btn{
+  
+    margin-top: 30px;
+
+    width: 150px;
+    background-color: #42b2e6;
+    color:white;
+  
+  }
+  .container .btn:hover{
+    background-color:white;
+    color:rgb(55, 24, 141);
+  }
+}
+/*maximum width upto 552px*/
+  @media screen and (max-width:552px){
+    .container{
+      width: 300px;
+      margin-top: 42%;
+    }
+    #email{
+      width: 220px;
+      margin-top:10px;
+      font-size: 12px;
+      color:rgb(11, 4, 29);
+      font-weight: 500;
+      border-color:none;
+      background-color: rgb(240, 238, 238);
+    }
+    .container .btn{
+    
+      margin-top: 30px;
+      margin-left: 30px;
+      width: 150px;
+      background-color: #42b2e6;
+      color:white;
+    
+    }
+    .container .btn:hover{
+      background-color:white;
+      color:rgb(55, 24, 141);
+    }
+    .card-body >h2{
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;;
+      color:rgb(26, 30, 73);
+    }
+    .card-body >p{
+      text-align:center;
+      color:rgb(11, 4, 29);
+      font-weight: 500;
+      font-size: 12px;
+    }
+    .bg4{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      z-index: -1;
+    
+    
+  }
+}

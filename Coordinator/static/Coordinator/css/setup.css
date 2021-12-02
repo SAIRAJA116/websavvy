@@ -1,0 +1,63 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background:white;
+    font-family: "Poppins", sans-serif;
+}
+.navbar-light{
+    background: linear-gradient(to bottom right, #7e41bb -10%, #d87bdc 89%);
+
+}
+.btn1{
+    width: 130px;
+    background-color: #874baf;
+    color:white;
+    border-radius: 30px;
+    border-color: transparent;
+    padding: 7px;
+    float: right;
+  
+  }
+  .btn1:hover{
+    background-color:white;
+    color:rgb(104, 55, 137);
+  }
+
+  .btn2{
+    width: 150px;
+    background-color: #874baf;
+    color:white;
+    border-radius: 30px;
+    border-color: transparent;
+    padding: 7px;
+    float: right;
+  
+  }
+  .btn2:hover{
+    background-color:white;
+    color:rgb(104, 55, 137);
+  }
+  .container-fluid .table{
+    width: 80%;
+    font-size: 14px;
+}
+  .table .thead-light th{
+    background-color: rgb(245, 227, 248);;
+      color:rgb(73, 5, 110);
+      border: 1px solid rgb(231, 229, 229);
+      text-align: center;
+      font-size: 17px;
+      font-weight: 400;
+  }
+  .table tbody tr  td {
+    border: 1px solid rgb(223, 221, 221);
+    background: #f7f7f5;
+    color:#8e9193;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+  }

@@ -1,0 +1,136 @@
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background:white;
+    font-family: "Poppins", sans-serif;
+}
+.navbar-light{
+    background: linear-gradient(to bottom right, #7e41bb -10%, #d87bdc 89%);
+    height: 70px;
+
+}
+
+
+
+.image:hover  {
+    /*webkit-filter: blur(1px); /* Chrome, Safari, Opera */
+    filter: blur(1px);
+    transition: 0.3s ease;
+}
+.imagecontainer{
+    position: relative;
+    margin-top:20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} 
+.btn-green{
+    position: relative;
+    margin-top: 70px;
+    margin-left:-10px ;
+    transform: translate(-50%, -50%);
+} 
+#details {
+    position: relative;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+#reset{
+    margin-top: -8%;
+
+}
+#logout{
+    margin-top:-2%;
+    font-size: 12px;
+}
+.faculty{
+    margin-left: 15%;
+}
+.student{
+    margin-right: 10%;
+}
+.footer{
+    margin-top: 10px;
+    backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(150px);
+  background-color: black;
+}
+.info{
+    margin-top: 40px;
+}
+.ml-2{
+    font-size: 15px;
+}
+
+
+@media screen and (max-width:991px){
+    .imagecontainer{
+        margin-top:-20px;
+    }
+    .form-control{
+        float: right;
+    }
+    .faculty{
+        margin-left: 20%;
+    }
+    .student{
+        margin-right: 12%;
+    }
+
+    .info{
+        margin-top: 10px;
+    }
+    .ml-2{
+        font-size: 15px;
+    }
+}
+@media screen and (max-width:751px) {
+
+     .faculty{
+        margin-left: 10%;
+    }
+    .student{
+        margin-right: 6%;
+    }
+}
+@media screen and (max-width:568px){
+    .imagecontainer{
+        margin-top:-30px;
+    }
+    #logout{
+        margin-top:-10%;
+        font-size: 12px;
+    }
+    .faculty{
+        margin-left: 8%;
+    }
+    .student{
+        margin-right: 3%;
+    }
+
+}
+@media screen and (max-width:535px) {
+
+    .faculty{
+       margin-left: 4%;
+   }
+   .student{
+       margin-right: 3%;
+   }
+   b{
+       font-size: 8px;
+   }
+   p{
+       font-size: 13px;
+   }
+}
+  
+@media screen and (max-width:410px){
+    .imagecontainer{
+        margin-top:-50px;
+    }
+}

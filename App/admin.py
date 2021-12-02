@@ -7,3 +7,8 @@ class UserAdminConfig(admin.ModelAdmin):
     search_fields = ('email','roll')
 
 admin.site.register(NewUser,UserAdminConfig)
+admin.site.register(Post)
+admin.site.register(PostImage)
+admin.site.register(Comment)
+admin.site.register(Event)
+admin.site.register(OTPContainer)
